@@ -18,11 +18,11 @@ class Supplier extends AbstractMigration {
         $table->addColumn('SuppId', 'integer');
         $table->addColumn('SuppName', 'string', ['limit' => 70]);
         $table->addColumn('SuppAddress', 'string', ['limit' => 200]);
-        $table->addColumn('SuppFacebook', 'string', ['limit' => 100]);
+        $table->addColumn('SuppFacebook', 'string', ['limit' => 100, 'null' => true]);
         $table->addColumn('SuppPhone', 'string', ['limit' => 11]);
-        $table->addColumn('SuppEmail', 'string', ['limit' => 100]);
-        $table->addColumn('SuppFax', 'string', ['limit' => 11]);
-
+        $table->addColumn('SuppEmail', 'string', ['limit' => 100, 'null' => true]);
+        $table->addColumn('SuppFax', 'string', ['limit' => 11, 'null' => true]);
+        $table->addIndex(['SuppEmail'], ['unique' => true]);
         $table->create();
 
         $this->execute('ALTER TABLE `Supplier` CHANGE SuppId SuppId INT(7) AUTO_INCREMENT;');

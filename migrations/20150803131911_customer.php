@@ -23,7 +23,7 @@ class Customer extends AbstractMigration {
         $table->addColumn('CustFacebook', 'string', ['limit' => 100]);
         $table->addColumn('CustEmail', 'integer', ['limit' => 100]);
         $table->addColumn('CustPassword', 'integer', ['limit' => 100]);
-
+        $table->addIndex(['CustEmail'], ['unique' => true]);
         $table->create();
         
         $this->execute('ALTER TABLE `Customer` CHANGE CustId CustId INT(7) AUTO_INCREMENT;');

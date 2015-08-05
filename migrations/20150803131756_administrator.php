@@ -24,7 +24,7 @@ class Administrator extends AbstractMigration {
         $table->addColumn('AdmEmail', 'string', ['limit' => 100]);
         $table->addColumn('AdmPassword', 'integer', ['limit' => 100]);
         $table->addColumn('AdmStatus', 'integer');
-
+        $table->addIndex(['AdmEmail'], ['unique' => true]);
         $table->create();
 
         $this->execute('ALTER TABLE `Administrator` CHANGE AdmId AdmId INT(7) AUTO_INCREMENT;');
