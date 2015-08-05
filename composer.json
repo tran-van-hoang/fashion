@@ -1,0 +1,17 @@
+{
+    "name": "butdatac/fashion",
+    "require": {
+        "zendframework/zendframework1": "^1.12",
+        "phpunit/dbunit": "^1.4"
+    },
+    "require-dev": {
+        "phing/phing": "^2.11",
+        "robmorgan/phinx": "^0.4.4"
+    },
+    "authors": [
+        {
+            "name": "tranvanhoang",
+            "email": "butdatac@gmail.com"
+        }
+    ]
+}

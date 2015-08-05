@@ -1,0 +1,32 @@
+paths:
+    migrations: %%PHINX_CONFIG_DIR%%/migrations
+
+environments:
+    default_migration_table: phinxlog
+    default_database: development
+    production:
+        adapter: mysql
+        host: localhost
+        name: fashion_live
+        user: fashion_live
+        pass: 'fashion_live'
+        port: 3306
+        charset: utf8mb4
+
+    development:
+        adapter: mysql
+        host: localhost
+        name: fashion_dev
+        user: fashion_dev
+        pass: 'fashion_dev'
+        port: 3306
+        charset: utf8mb4
+
+    testing:
+        adapter: mysql
+        host: localhost
+        name: fashion_testing
+        user: fashion_testing
+        pass: 'fashion_testing'
+        port: 3306
+        charset: utf8mb4
