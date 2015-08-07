@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <database name="fashion_testing">
+        <table_data name="Customer">
+            <row>
+                <field name="CustName">Trần Văn Hoàng</field>
+                <field name="CustGender">1</field>
+                <field name="CustBirthday">19232-2-2</field>
+                <field name="CustAddress">Lê Chân, Hải Phòng</field>
+                <field name="CustPhone">0723049230</field>
+                <field name="CustFacebook">Trần Văn Hoàng</field>
+                <field name="CustEmail">phatradang@yahoo.com</field>
+                <field name="CustPassword">kjhgf</field>
+            </row>
+        </table_data>
+    </database>
+</mysqldump>
+

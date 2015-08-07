@@ -21,6 +21,7 @@ class Administrator extends AbstractMigration {
         $table->addColumn('AdmId', 'integer', ['limit' => 7]);
         $table->addColumn('AdmName', 'string', ['limit' => 70]);
         $table->addColumn('AdmFacebook', 'string', ['limit' => 100]);
+        $table->addColumn('AdmPhone', 'string', ['limit' => 11]);
         $table->addColumn('AdmEmail', 'string', ['limit' => 100]);
         $table->addColumn('AdmPassword', 'integer', ['limit' => 100]);
         $table->addColumn('AdmStatus', 'integer');

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <database name="fashion_testing">
+        <table_data name="Administrator">
+            <row>
+                <field name="AdmName">Trần Văn Hoàng</field>
+                <field name="AdmFacebook">Trần Văn Hoàng</field>
+                <field name="AdmPhone">01267618465</field>
+                <field name="AdmEmail">butdatac@gmail.com</field>
+                <field name="AdmPassword">yvuibkilno</field>
+                <field name="AdmStatus">1</field>
+            </row>
+            <row>
+                <field name="AdmName">Lê Đức Anh</field>
+                <field name="AdmFacebook">Trần Văn Hoàng</field>
+                <field name="AdmPhone">01267618465</field>
+                <field name="AdmEmail">butdatac@gmail.com</field>
+                <field name="AdmPassword">yvuibkilno</field>
+                <field name="AdmStatus">1</field>
+            </row>
+            <row>
+                <field name="AdmName">Vũ Đại Dương</field>
+                <field name="AdmFacebook">Trần Văn Hoàng</field>
+                <field name="AdmPhone">01267618465</field>
+                <field name="AdmEmail">butdatac@gmail.com</field>
+                <field name="AdmPassword">yvuibkilno</field>
+                <field name="AdmStatus">1</field>
+            </row>
+            <row>
+                <field name="AdmName">Trần Văn Thắng</field>
+                <field name="AdmFacebook">Trần Văn Hoàng</field>
+                <field name="AdmPhone">01267618465</field>
+                <field name="AdmEmail">butdatac@gmail.com</field>
+                <field name="AdmPassword">yvuibkilno</field>
+                <field name="AdmStatus">1</field>
+            </row>
+        </table_data>
+    </database>
+</mysqldump>

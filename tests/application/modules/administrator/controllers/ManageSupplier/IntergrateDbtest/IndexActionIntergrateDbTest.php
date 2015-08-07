@@ -4,37 +4,28 @@
  * @author Tran Van Hoang<butdatac@gmail.com>
  * test action index in manage supplier controller when having data
  */
-class IndexActionIntergrateDbTest extends Vms_Test_PHPUnit_ControllerWithDatabaseFixturesTestCase {
+class IndexActionIntergrateDbTest extends ExtendPHPUnit_IntegratingDatabaseTesting {
 
+    /**
+     *
+     * @var boolean
+     */
     protected $truncateFixturesWhenTearDown = false;
 
     /**
-     * Initialing data to test action index
+     * This variable contain the files name of input data file
+     * @var array 
      */
-    protected function getDataSet() {
-        return new PHPUnit_Extensions_Database_DataSet_ArrayDataSet([
-            "Banner" => [
-                [
-                    "BannImage" => "Trần Văn Hoàng"
-                ],[
-                    "BannImage" => "Trần Văn Thắng"
-                ],[
-                    "BannImage" => "Trần Tuấn Anh"
-                ]
-                
-            ]
-        ]);
-    }
+    protected $inputDataFilesName = [
+        'InputDataSupplier.xml'
+    ];
 
     /**
-     * test execute action index and access to index manage supplier page is ok
+     * test execute index action in manageSupplier controller is ok
      */
-    public function testExecuteActionIndex() {
-        $this->dispatch("/administrator/manage-supplier");
+    public function testExecuteIndexAction() {
+        $this->dispatch('/administrator/manage-supplier');
         $this->assertResponseCode(200);
     }
 
-    /**
-     * test index manage supplier page display exactly the number of record
-     */
 }

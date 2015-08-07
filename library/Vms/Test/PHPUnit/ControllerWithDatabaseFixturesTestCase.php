@@ -11,8 +11,8 @@
  *
  * @author hungtd
  */
-abstract class Vms_Test_PHPUnit_ControllerWithDatabaseFixturesTestCase extends Zend_Test_PHPUnit_ControllerTestCase
-{
+abstract class Vms_Test_PHPUnit_ControllerWithDatabaseFixturesTestCase extends Zend_Test_PHPUnit_ControllerTestCase {
+
     /**
      *
      * @var Zend_Test_PHPUnit_Db_SimpleTester
@@ -25,12 +25,10 @@ abstract class Vms_Test_PHPUnit_ControllerWithDatabaseFixturesTestCase extends Z
      */
     protected $truncateFixturesWhenTearDown = true;
 
-    protected function setUp()
-    {
+    protected function setUp() {
         $this->setUpBoostrap();
         parent::setUp();
         $this->setupDatabase();
-
     }
 
     /**
@@ -38,20 +36,20 @@ abstract class Vms_Test_PHPUnit_ControllerWithDatabaseFixturesTestCase extends Z
      *
      * Override this method if you want change init application evn
      */
-    protected function setUpBoostrap()
-    {
+    protected function setUpBoostrap() {
         // Set configuration files
         $config = array(APPLICATION_PATH . '/configs/application.ini');
         if (file_exists(APPLICATION_PATH . '/configs/application.local.ini')) {
             $config[] = APPLICATION_PATH . '/configs/application.local.ini';
         }
-        $this->bootstrap = new Zend_Application(APPLICATION_ENV, array('config'=>$config));
+        $this->bootstrap = new Zend_Application(APPLICATION_ENV, array('config' => $config));
     }
 
-    protected function tearDown()
-    {
+    protected function tearDown() {
         if ($this->databaseTester) {
+            $this->databaseTester->getConnection()->getConnection()->exec('SET FOREIGN_KEY_CHECKS = 1;');
             $this->databaseTester->onTearDown(); //default null operation - nothing to
+
             /**
              * Destroy the tester after the test is run to keep DB connections
              * from piling up.
@@ -61,12 +59,12 @@ abstract class Vms_Test_PHPUnit_ControllerWithDatabaseFixturesTestCase extends Z
         parent::tearDown();
     }
 
-    protected function setupDatabase()
-    {
+    protected function setupDatabase() {
         $db = $this->bootstrap->getBootstrap()->getResource('db');
-        $connection = new Zend_Test_PHPUnit_Db_Connection($db,'');
+        $connection = new Zend_Test_PHPUnit_Db_Connection($db, '');
         $databaseTester = new Zend_Test_PHPUnit_Db_SimpleTester($connection);
         $databaseTester->setupDatabase($this->getDataSet());
+        $this->databaseTester->getConnection()->getConnection()->exec('SET FOREIGN_KEY_CHECKS = 0;');
         if ($this->truncateFixturesWhenTearDown) {
             $databaseTester->setTearDownOperation(new Zend_Test_PHPUnit_Db_Operation_Truncate()); // truncate database when call teardown
         }

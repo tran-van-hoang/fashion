@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <database name="fashion_testing">
+        <table_data name="Order">
+            <row>
+                <field name="CustId">1</field>
+                <field name="OrderStatus">1</field>
+                <field name="OrderDate">1999-2-2</field>
+                <field name="OrderProcessDate">19232-2-2</field>
+                <field name="OrderDescription">hello world</field>
+            </row>
+        </table_data>
+    </database>
+</mysqldump>
+
