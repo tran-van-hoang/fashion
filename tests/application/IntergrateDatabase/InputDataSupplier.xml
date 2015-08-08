@@ -3,7 +3,7 @@
     <database name="fashion_testing">
         <table_data name="Supplier">
             <row>
-                <field name="SuppName">Trần Văn Hoàng3232</field>
+                <field name="SuppName">Trần Văn Hoàng</field>
                 <field name="SuppAddress">Trần Nguyên Hãn, Lê Chân, Hải Phòng</field>
                 <field name="SuppFacebook">Trần Văn Hoàng</field>
                 <field name="SuppPhone">01267618465</field>
@@ -19,7 +19,7 @@
                 <field name="SuppFax">01748329342</field>
             </row>
             <row>
-                <field name="SuppName">Trần Tuân Anh</field>
+                <field name="SuppName">Trần Tuấn Anh</field>
                 <field name="SuppAddress">Trần Nguyên Hãn, Lê Chân, Hải Phòng</field>
                 <field name="SuppFacebook">tuananh</field>
                 <field name="SuppPhone">01267677775</field>

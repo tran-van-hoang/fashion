@@ -59,9 +59,11 @@ abstract class ExtendPHPUnit_IntegratingDatabaseTesting extends Zend_Test_PHPUni
             $databaseTester = new Zend_Test_PHPUnit_Db_SimpleTester($connection);
             $databaseTester->getConnection()->getConnection()->query('SET foreign_key_checks = 0');
             $databaseFixture = new PHPUnit_Extensions_Database_DataSet_MysqlXmlDataSet(INPUT_DATA_TEST_PATH . $inputDataFileName);
+
             if ($this->truncateFixturesWhenTearDown) {
                 $databaseTester->setTearDownOperation(new Zend_Test_PHPUnit_Db_Operation_Truncate()); // truncate database when call teardown
             }
+            
             $databaseTester->setupDatabase($databaseFixture);
             $databasesTester[] = $databaseTester;
         }
@@ -85,7 +87,6 @@ abstract class ExtendPHPUnit_IntegratingDatabaseTesting extends Zend_Test_PHPUni
 
     /**
      * Init boostrap to controller test case
-     *
      * Override this method if you want change init application evn
      */
     private function setUpBoostrap() {

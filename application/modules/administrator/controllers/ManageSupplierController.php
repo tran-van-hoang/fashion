@@ -9,6 +9,9 @@ class Administrator_ManageSupplierController extends Zend_Controller_Action {
     public function indexAction() {
         $this->view->headTitle('Quản lý nhà cung cấp|Fashion');
         $this->_helper->_layout->setLayout('not-seo');
+        $supplierMapper = new Administrator_Model_SupplierMapper();
+        $test = $supplierMapper->getAllSupplierRecords();
+        var_dump($test);
         
     }
 
