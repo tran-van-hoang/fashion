@@ -4,19 +4,13 @@
  * @author Tran Van Hoang<butdatac@gmail.com>
  * test action index in manage supplier controller when having data
  */
-class IndexActionIntergrateDbTest extends ExtendPHPUnit_IntegratingDatabaseTesting {
-
-    /**
-     *
-     * @var boolean
-     */
-    protected $truncateFixturesWhenTearDown = false;
+class IndexActionTest extends ExtendPHPUnit_IntegratingDatabaseTesting {
 
     /**
      * This variable contain the files name of input data file
      * @var array 
      */
-    protected $inputDataFilesName = [
+    protected $_inputDataFilesName = [
         'InputDataSupplier.xml'
     ];
 
@@ -34,7 +28,7 @@ class IndexActionIntergrateDbTest extends ExtendPHPUnit_IntegratingDatabaseTesti
      * 'SuppPhone' field, 'SuppEmail' field
      * @dataProvider inputTestDisplayRecords
      */
-    public function testDisplayRecords($suppName,$suppAddress,$suppPhone,$suppEmail) {
+    public function testDisplayRecords($suppName, $suppAddress, $suppPhone, $suppEmail) {
 
         $this->dispatch('/administrator/manage-supplier');
         $this->assertQueryContentContains("body", $suppName);
@@ -43,6 +37,10 @@ class IndexActionIntergrateDbTest extends ExtendPHPUnit_IntegratingDatabaseTesti
         $this->assertQueryContentContains("body", $suppEmail);
     }
 
+    /**
+     * prepare data to test display record
+     * @return array
+     */
     public function inputTestDisplayRecords() {
         return [
             ['Trần Văn Hoàng', 'Trần Nguyên Hãn, Lê Chân, Hải Phòng', '01267618465', 'butdatac@gmail.com'],

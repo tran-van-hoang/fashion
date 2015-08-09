@@ -2,35 +2,42 @@
 
 /**
  * @author Tran Van Hoang <butdatac@gmail.com>
- * design template for DbMapper
+ * factory create object mapper
  */
 class Application_Model_Factory_MapperFactory {
 
     /**
-     * @var 
+     * you <b><i>have to</i></b> overide this variable with the name of 
+     * db table class
+     * @var mixed 
      */
-    private $_dbTable;
+    protected $_dbTable;
 
     /**
-     * @param string $dbTable
-     * @return optional
+     * @return mixed
      */
-    protected function getDbTable() {
+    protected function _getDbTable() {
+        $this->__setDbTable();
         return $this->_dbTable;
     }
 
     /**
-     * set db table
+     * set db table with the table name was set by subclass
      * @param string $dbTable
      * @throws Exception
      */
-    protected function setDbTable($dbTable) {
+    private function __setDbTable() {
+        $dbTable = $this->_dbTable;
+        //begin check valid
         if (is_string($dbTable)) {
             $dbTable = new $dbTable();
         }
+        
         if (!$dbTable instanceof Zend_Db_Table_Abstract) {
             throw new Exception('Invalid table data gateway provided');
         }
+        //end check valid
+        
         $this->_dbTable = $dbTable;
     }
 

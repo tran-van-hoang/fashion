@@ -1,0 +1,44 @@
+<table class="table table-striped ">
+    <header><h1 class="h1">Bảng danh sách các nhà cung cấp:</h1></header>
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Họ và tên</th>
+                <th>Địa chỉ</th>
+                <th>Facebook</th>
+                <th>Số điện thoại</th>
+                <th>Email</th>
+                <th>Fax</th>
+                <th colspan="2">Tác vụ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $suppliers = $this->suppliers;
+            $number = 0;
+            foreach ($suppliers as $supplier):
+                $number++;
+                $supplierName = $supplier->SuppName;
+                $supplierAddress = $supplier->SuppAddress;
+                $supplierFacebook = $supplier->SuppFacebook;
+                $supplierPhone = $supplier->SuppPhone;
+                $supplierEmail = $supplier->SuppEmail;
+                $supplierFax = $supplier->SuppFax;
+                $supplierId = $supplier->SuppId;
+                $urlDelete = 'manage-supplier/delete/id/'.$supplierId;
+                $urlEdit = '';
+                ?>
+                <tr>
+                    <td><?= $number ?></td>
+                    <td><?= $supplierName ?></td>
+                    <td><?= $supplierAddress ?></td>
+                    <td><?= $supplierFacebook ?></td>
+                    <td><?= $supplierPhone ?></td>
+                    <td><?= $supplierEmail ?></td>
+                    <td><?= $supplierFax ?></td>
+                    <td><a href="<?= $urlDelete ?>">Xóa</a></td>
+                    <td><a href="<?= $urlEdit ?>">Sửa</a></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+</table>

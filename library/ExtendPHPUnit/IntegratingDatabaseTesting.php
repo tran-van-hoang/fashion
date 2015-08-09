@@ -1,75 +1,93 @@
 <?php
 
 /**
- * This class will intergrate database for test, after testing it will remove all data
+ * This class will intergrate database for test. By default, it will 
+ * remove all data after testing.<br><br>
+ * <b>3 simple step:</b><br>
+ * - First, extend this class.
+ * - Second, you must difine variable INPUT_DATA_TEST_PATH in bootstrap.php in
+ * testing enviroment like this:<br>
+ * define('INPUT_DATA_TEST_PATH', APPLICATION_PATH.'/../tests/application/IntergrateDatabase/');.
+ * This constant is path to folder which contain file data for testing.<br>
+ * - Third, you must overive variable $_inputDataFilesName as the following:<br> 
+ * "protected $_inputDataFilesName = ['FileDataTest1.xml','FileDataTest2.xml']".<br>
+ * - You can tell program does not truncate data after testing by overiding
+ * "protected $_truncateFixturesWhenTearDown = false".
  */
-abstract class ExtendPHPUnit_IntegratingDatabaseTesting extends Zend_Test_PHPUnit_ControllerTestCase {
+class ExtendPHPUnit_IntegratingDatabaseTesting extends Zend_Test_PHPUnit_ControllerTestCase {
 
     /**
      * you must overide this variable with the files name of input data which 
      * you want to set
      * @var array
      */
-    protected $inputDataFilesName;
+    protected $_inputDataFilesName;
 
     /**
      * @var Zend_Test_PHPUnit_Db_Connection 
      */
-    private static $connection;
+    private static $__connection;
 
     /**
-     * @var Zend_Test_PHPUnit_Db_SimpleTester
+     * @var array
      */
-    private $databasesTester = array();
+    private $__databasesTester;
 
     /**
+     * you can overide this variable. If you set false, data will not be clean
+     * after each testing.
      * @var boolean
      */
-    protected $truncateFixturesWhenTearDown = true;
+    protected $_truncateFixturesWhenTearDown = true;
 
     /**
      * 
      */
     protected function setUp() {
-        $this->setUpBoostrap();
+        $this->__setUpBoostrap();
         parent::setUp();
-        $this->setupDatabaseTesting();
+        $this->__setupDatabaseTesting();
     }
-
+    
     /**
-     * delete all data after testing
+     * Initialling boostrap to controller test case
      */
-    protected function tearDown() {
-        if ($this->databasesTester) {
-            foreach ($this->databasesTester as $databaseTester) {
-                $databaseTester->onTearDown(); //default null operation - nothing to
-            }
+    private function __setUpBoostrap() {
+        // Set configuration files
+        $config = array(APPLICATION_PATH . '/configs/application.ini');
+        if (file_exists(APPLICATION_PATH . '/configs/application.local.ini')) {
+            $config[] = APPLICATION_PATH . '/configs/application.local.ini';
         }
-        parent::tearDown();
+        $this->bootstrap = new Zend_Application(APPLICATION_ENV, array('config' => $config));
     }
 
     /**
-     * This method will intergate database for testing 
+     * This method will intergate database for testing.
      */
-    private function setupDatabaseTesting() {
-        $connection = $this->dbConnect();
-        $inputDataFilesName = $this->inputDataFilesName;
-        //set data for each table
+    private function __setupDatabaseTesting() {
+        $connection = $this->__dbConnect();
+        $inputDataFilesName = $this->_inputDataFilesName;
+
+        //begin set data for each table
         foreach ($inputDataFilesName as $inputDataFileName) {
             $databaseTester = new Zend_Test_PHPUnit_Db_SimpleTester($connection);
-            $databaseTester->getConnection()->getConnection()->query('SET foreign_key_checks = 0');
+            $databaseTester->getConnection()
+                    ->getConnection()
+                    ->query('SET foreign_key_checks = 0');
+            //get data from file
             $databaseFixture = new PHPUnit_Extensions_Database_DataSet_MysqlXmlDataSet(INPUT_DATA_TEST_PATH . $inputDataFileName);
-
-            if ($this->truncateFixturesWhenTearDown) {
+            //if $_truncateFixturesWhenTearDown set be true, data will be clean
+            //after each testing
+            if ($this->_truncateFixturesWhenTearDown) {
                 $databaseTester->setTearDownOperation(new Zend_Test_PHPUnit_Db_Operation_Truncate()); // truncate database when call teardown
             }
-            
+
             $databaseTester->setupDatabase($databaseFixture);
             $databasesTester[] = $databaseTester;
         }
+        //end set data for each table
 
-
-        $this->databasesTester = $databasesTester;
+        $this->__databasesTester = $databasesTester;
     }
 
     /**
@@ -77,25 +95,24 @@ abstract class ExtendPHPUnit_IntegratingDatabaseTesting extends Zend_Test_PHPUni
      * @param Zend_Test_PHPUnit_ControllerTestCase $db
      * @return Zend_Test_PHPUnit_Db_Connection
      */
-    private function dbConnect() {
-        if (!self::$connection) {
+    private function __dbConnect() {
+        if (!self::$__connection) {
             $db = $this->bootstrap->getBootstrap()->getResource('db');
-            self::$connection = new Zend_Test_PHPUnit_Db_Connection($db, null);
+            self::$__connection = new Zend_Test_PHPUnit_Db_Connection($db, null);
         }
-        return self::$connection;
+        return self::$__connection;
     }
-
+    
     /**
-     * Init boostrap to controller test case
-     * Override this method if you want change init application evn
+     * delete all data after testing
      */
-    private function setUpBoostrap() {
-        // Set configuration files
-        $config = array(APPLICATION_PATH . '/configs/application.ini');
-        if (file_exists(APPLICATION_PATH . '/configs/application.local.ini')) {
-            $config[] = APPLICATION_PATH . '/configs/application.local.ini';
+    protected function tearDown() {
+        if ($this->__databasesTester) {
+            foreach ($this->__databasesTester as $databaseTester) {
+                $databaseTester->onTearDown(); //default null operation - nothing to
+            }
         }
-        $this->bootstrap = new Zend_Application(APPLICATION_ENV, array('config' => $config));
+        parent::tearDown();
     }
 
 }
