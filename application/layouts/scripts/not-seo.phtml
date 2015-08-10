@@ -1,8 +1,8 @@
 <?php /* @var $this Zend_View */ ?>
 <html>
 
-<?php echo $this->doctype() ;
-        ?>
+    <?php echo $this->doctype();
+    ?>
     <head>
         <meta NAME="robots" CONTENT="noindex, nofollow">
         <meta charset="utf-8">
@@ -12,23 +12,30 @@
         <?= $this->headScript() ?>
     </head>
     <body>
+        <!--begin menu-->
         <header>
             <menu>
                 <nav><?= $this->render('_header.phtml'); ?></nav>
             </menu>
         </header>
-        <section>
-            <?= $this->layout()->content; ?>
-        </section>
-        <section>
-        </section>
+        <!--end menu-->
+        
+        <!--begin content-->
+        <?= $this->layout()->content; ?>
+        <!--end content-->
+        
+        <!--begin paginator-->
         <nav>
-            <?=$this->partial('_paginator.phtml')?>
+            <?= $this->partial('_paginator.phtml') ?>
         </nav>
+        <!--end paginator-->
+        
+        <!--begin footer-->
         <footer>
             <?php
             echo $this->partial('_footer.phtml');
             ?>
         </footer>
+        <!--end footer-->
     </body>
 </html>

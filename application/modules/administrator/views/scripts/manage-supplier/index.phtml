@@ -1,5 +1,6 @@
-<table class="table table-striped ">
-    <header><h1 class="h1">Bảng danh sách các nhà cung cấp:</h1></header>
+<section id="indexManageSupplier">
+    <table class="table table-striped ">
+        <header><h1 class="h1">Bảng danh sách các nhà cung cấp:</h1></header>
         <thead>
             <tr>
                 <th>STT</th>
@@ -25,8 +26,8 @@
                 $supplierEmail = $supplier->SuppEmail;
                 $supplierFax = $supplier->SuppFax;
                 $supplierId = $supplier->SuppId;
-                $urlDelete = 'manage-supplier/delete/id/'.$supplierId;
-                $urlEdit = '';
+                $urlDelete = 'manage-supplier/delete/id/' . $supplierId;
+                $urlEdit = 'manage-supplier/edit/id/' . $supplierId;
                 ?>
                 <tr>
                     <td><?= $number ?></td>
@@ -41,4 +42,5 @@
                 </tr>
             <?php endforeach; ?>
         </tbody>
-</table>
+    </table>
+</section>

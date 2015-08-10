@@ -4,7 +4,7 @@
  * @author Tran Van Hoang<butdatac@gmail.com>
  * test action delete in manage supplier controller
  */
-class DeleteActionTest extends ExtendPHPUnit_IntegratingDatabaseTesting {
+class DeleteActionTest extends ExtendPHPUnit_IntegratingDatabaseForTesting {
 
     /**
      * This variable contain the files name of input data file
@@ -13,7 +13,6 @@ class DeleteActionTest extends ExtendPHPUnit_IntegratingDatabaseTesting {
     protected $_inputDataFilesName = [
         'InputDataSupplier.xml'
     ];
-    protected $_truncateFixturesWhenTearDown = false;
 
     /**
      * test when call delete action without id, page will be only

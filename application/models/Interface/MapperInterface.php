@@ -5,5 +5,5 @@ interface Application_Model_Interface_MapperInterface {
     public function getRecord($id);
     public function create();
     public function delete($id);
-    public function edit($id);
+    public function edit($data);
 }

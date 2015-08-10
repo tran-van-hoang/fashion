@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @author TranVanHoang
+ * @author Tran Van Hoang
  * paginator
  */
 class Application_Service_Paginator {

@@ -37,8 +37,11 @@ class Administrator_Model_SupplierMapper extends Application_Model_Factory_Mappe
      * 
      * @param integer $id
      */
-    public function edit($id) {
-        
+    public function edit($data) {
+        $dbMapper = $this->__getDbMapper();
+
+        $where = $dbMapper->getAdapter()->quoteInto('SuppId = ?', $data['SuppId']);
+        $dbMapper->update($data, $where);
     }
 
     /**
@@ -59,7 +62,8 @@ class Administrator_Model_SupplierMapper extends Application_Model_Factory_Mappe
      * @param integer $id
      */
     public function getRecord($id) {
-        
+        $dbMapper = $this->__getDbMapper();
+        return $dbMapper->find($id)->current();
     }
 
 }

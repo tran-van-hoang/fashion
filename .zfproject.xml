@@ -32,7 +32,9 @@
               <actionMethod actionName="index"/>
             </controllerFile>
           </controllersDirectory>
-          <formsDirectory enabled="false"/>
+          <formsDirectory>
+            <formFile formName="EditSupplier"/>
+          </formsDirectory>
           <layoutsDirectory enabled="false"/>
           <modelsDirectory>
             <modelFile modelName="Supplier"/>

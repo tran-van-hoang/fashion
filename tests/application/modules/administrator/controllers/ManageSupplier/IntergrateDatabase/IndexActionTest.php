@@ -4,7 +4,7 @@
  * @author Tran Van Hoang<butdatac@gmail.com>
  * test action index in manage supplier controller when having data
  */
-class IndexActionTest extends ExtendPHPUnit_IntegratingDatabaseTesting {
+class IndexActionTest extends ExtendPHPUnit_IntegratingDatabaseForTesting {
 
     /**
      * This variable contain the files name of input data file
