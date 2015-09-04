@@ -3,10 +3,6 @@
 /**
  * This is a assembly machine, it reponsible for assembling your form<br>
  * <b>Assembly process:</b><br>
- * 
- * 
- * 
- * 
  * @author Tran Van Hoang <phatradang@gmail.com>
  */
 class Application_Form_FormFactory extends Zend_Form {
@@ -17,22 +13,21 @@ class Application_Form_FormFactory extends Zend_Form {
     private $__formPattern;
 
     /**
-     * You can search with the key word like "__name"
-     * @var array This is the list of supported elements type 
+     * @var array This is the list of supported elements type.
+     * You can search it in this file with the key word looking like "__name" 
      */
     private $__supportedType = [
-        'action',
-        'submit',//input type = submit
+        'formAtt', //attribute -- action, method,...
+        'id', //input type = hidden
         'name', //input type= text
-        'dateOfBirth', //input type= date
-        'gender', //input type= radio
-        'phoneNumber', //input type = text
-        'number',//input type = text
+        'phone', //input type = text
+        'number', //input type = text
         'email', //inpyt type = text
-        'facebook', //inpyt type = text
-        'password', //inpyt type = password
+        'password', //input type = password
+        'comfirmPassword', //input type = password
         'information', //textarea
-        'note' //like information type but it can be empty
+        'note', //textarea -- this type similar to information type but it can be empty
+        'submit', //input type = submit
     ];
 
     /**
@@ -42,6 +37,7 @@ class Application_Form_FormFactory extends Zend_Form {
         $this->__setFormPattern($formPattern);
         $this->init($this->__assemblyMachine());
         $this->loadDefaultDecorators();
+//        $this->setOptions($options);
     }
 
     /**
@@ -50,6 +46,14 @@ class Application_Form_FormFactory extends Zend_Form {
      */
     private function __setFormPattern($formPattern) {
         $this->__formPattern = $formPattern;
+    }
+
+    /**
+     * call zend form
+     * @param Zend_Form $callAssemblyMachine
+     */
+    public function init($callAssemblyMachine = null) {
+        $callAssemblyMachine;
     }
 
     /**
@@ -63,7 +67,7 @@ class Application_Form_FormFactory extends Zend_Form {
         foreach ($pattern as $key => $value) {
             //make sure that this type is supported
             if (!in_array($key, $this->__supportedType)) {
-               die($key." không được hỗ trợ");
+                die($key . " không được hỗ trợ");
             }
 
             $method = "__" . $key;
@@ -75,21 +79,23 @@ class Application_Form_FormFactory extends Zend_Form {
      * @return array
      */
     private function __getFormPattern() {
-        $pattern = new $this->__formPattern();
+        $patternObject = new $this->__formPattern();
 
-        if (!$pattern instanceof Application_Form_FormInterface) {
-            die('This pattern must be an instance of Application_Form_FormInterface');
+        //check if pattern is instance of Application_Form_FormInterface
+        if (!$patternObject instanceof Application_Form_FormInterface) {
+            $message = "This pattern must be an instance of
+            Application_Form_FormInterface";
+            die($message);
         }
 
-        return $pattern->getFormPattern();
-    }
+        //check if pattern is in valid type
+        $pattern = $patternObject->getFormPattern();
+        if (!is_array($pattern)) {
+            die('Form pattern must be an array');
+        }
 
-    /**
-     * call zend form
-     * @param Zend_Form $callAssemblyMachine
-     */
-    public function init($callAssemblyMachine = null) {
-        $callAssemblyMachine;
+        //return valid type pattern
+        return $pattern;
     }
 
 //////////////////////////-- Above is main program --///////////////////////////
@@ -97,34 +103,37 @@ class Application_Form_FormFactory extends Zend_Form {
     /**
      * @param array $param
      */
-    private function __action($param) {
-        $action = $param[0];
-        $method = $param[1];
-        $id = $param[2];
-
-        $this->setAction($action)->setMethod($method);
+    private function __formAtt($param) {
+        $action = $param['action'];
+        $method = $param['method'];
+        $id = isset($param['id'])?$param['id']:null;
+        $enctype = isset($param['enctype'])?$param['enctype']:null;
+        
+        $this->setAttribs([
+                    'action'=>$action,
+                    'method'=>$method,
+                    'id'=> $id,
+                    'enctype'=>$enctype
+                ]);
     }
 
     /**
      * @param array $param
      */
-    private function __submit($param) {
-        $id = $param[0];
-
-        $this->addElement('submit', $id);
+    private function __id($param) {
+        $this->addElement(new Zend_Form_Element_Hidden($param['alias']));
     }
 
     /**
      * @param array $param
      */
     private function __name($param) {
-        $alias = $param[0];
-        $realName = $param[1];
-
-        $this->addElement('text', $alias, [
-            'label' => ucfirst($realName) . ":",
-            'required' => true,
-            'class' => 'hello',
+        $alias = $param['alias'];
+        $attributes = $this->__getAttributes($param['attributes']);
+        $realName = $param['realName'];
+        
+        $this->addElement(new Zend_Form_Element_Text($alias, [
+            $attributes,
             'validators' => [
                 [
                     'NotEmpty', true, [
@@ -140,20 +149,31 @@ class Application_Form_FormFactory extends Zend_Form {
                             'notAlpha' => "Bạn cần nhập chính xác $realName"
                         ]
                     ]
+                ],
+                [
+                    'StringLength', true, [
+                        'min' => 8,
+                        'max' => 80,
+                        'messages' => [
+                            'stringLengthTooShort' => ucfirst($realName)
+                            . " phải chứa ít nhất 8 kí tự",
+                            'stringLengthTooLong' =>
+                            "Bạn vui lòng để $realName dưới 80 kí tự"
+                        ]
+                    ]
                 ]
             ]
-        ]);
+        ]));
     }
-
 
     /**
      * @param array $param
      */
     private function __email($param) {
-        $alias = $param[0];
-        $realName = $param[1];
+        $alias = $param['alias'];
+        $realName = $param['name'];
 
-        $this->addElement('text', $alias, [
+        $this->addElement(new Zend_Form_Element_Text($alias, [
             'label' => ucfirst($realName) . ":",
             'required' => true,
             'validators' => [
@@ -165,6 +185,18 @@ class Application_Form_FormFactory extends Zend_Form {
                     ]
                 ],
                 [
+                    'StringLength', true, [
+                        'min' => 20,
+                        'max' => 120,
+                        'messages' => [
+                            'stringLengthTooShort' => ucfirst($realName)
+                            . " phải chứa ít nhất 20 kí tự",
+                            'stringLengthTooLong' => ucfirst($realName)
+                            . " phải dưới 120 kí tự"
+                        ]
+                    ]
+                ],
+                [
                     'EmailAddress', true, [
                         "messages" => [
                             'emailAddressInvalidFormat' => "$realName nhập sai"
@@ -172,25 +204,86 @@ class Application_Form_FormFactory extends Zend_Form {
                     ]
                 ]
             ]
-        ]);
+        ]));
+    }
+
+    /**
+     * generate password input
+     * @param array $param
+     */
+    private function __password($param) {
+        $alias = $param['alias'];
+        $realName = $param['name'];
+
+        $this->addElement(new Zend_Form_Element_Password($alias, [
+            'label' => ucfirst($realName) . ":",
+            'required' => true,
+            'validators' => [
+                [
+                    'NotEmpty', true, [
+                        "messages" => [
+                            'isEmpty' => "Bạn cần nhập $realName"
+                        ]
+                    ]
+                ],
+                [
+                    'StringLength', true, [
+                        'min' => 8,
+                        'max' => 50,
+                        'messages' => [
+                            'stringLengthTooShort' => ucfirst($realName)
+                            . " chứa ít hơn 8 kí tự",
+                            'stringLengthTooLong' => ucfirst($realName)
+                            . " chứa hơn 50 số"
+                        ]
+                    ]
+                ]
+            ]
+        ]));
     }
 
     /**
      * @param array $param
      */
-    private function __id($param) {
-        $alias = $param[0];
-        $this->addElement('hidden', $alias);
+    private function __comfirmPassword($param) {
+        $alias = $param['alias'];
+        $realName = $param['name'];
+
+        $this->addElement(new Zend_Form_Element_Password($alias, [
+            'label' => ucfirst($realName) . ":",
+            'required' => true,
+            'validators' => [
+                [
+                    'NotEmpty', true, [
+                        "messages" => [
+                            'isEmpty' => "Bạn cần nhập $realName"
+                        ]
+                    ]
+                ],
+                [
+                    'StringLength', true, [
+                        'min' => 8,
+                        'max' => 50,
+                        'messages' => [
+                            'stringLengthTooShort' => ucfirst($realName)
+                            . " chứa ít hơn 8 kí tự",
+                            'stringLengthTooLong' => ucfirst($realName)
+                            . " chứa nhiều hơn 50 số"
+                        ]
+                    ]
+                ]
+            ]
+        ]));
     }
 
     /**
      * @param array $param
      */
-    private final function __phoneNumber($param) {
-        $alias = $param[0];
-        $realName = $param[1];
+    private function __phone($param) {
+        $alias = $param['alias'];
+        $realName = $param['name'];
 
-        $this->addElement('text', $alias, [
+        $this->addElement(new Zend_Form_Element_Text($alias, [
             'label' => ucfirst($realName) . ":",
             'required' => true,
             'validators' => [
@@ -204,7 +297,7 @@ class Application_Form_FormFactory extends Zend_Form {
                 [
                     'Digits', true, [
                         'messages' => [
-                            'notDigits' => ucfirst($realName) 
+                            'notDigits' => ucfirst($realName)
                             . " chứa ký tự không phải là số"
                         ]
                     ]
@@ -214,25 +307,26 @@ class Application_Form_FormFactory extends Zend_Form {
                         'min' => 10,
                         'max' => 11,
                         'messages' => [
-                            'stringLengthTooShort' => ucfirst($realName) 
+                            'stringLengthTooShort' => ucfirst($realName)
                             . " chứa ít hơn 10 số",
-                            'stringLengthTooLong' => ucfirst($realName) 
+                            'stringLengthTooLong' => ucfirst($realName)
                             . " chứa nhiều hơn 11 số"
                         ]
                     ]
                 ]
             ]
-        ]);
+        ]));
     }
 
     /**
+     * This type is used for address,...
      * @param array $param
      */
     private final function __information($param) {
-        $alias = $param[0];
-        $realName = $param[1];
+        $alias = $param['alias'];
+        $realName = $param['name'];
 
-        $this->addElement('textarea', $alias, [
+        $this->addElement(new Zend_Form_Element_Textarea($alias, [
             'label' => ucfirst($realName) . ":",
             'required' => true,
             'validators' => [
@@ -242,46 +336,53 @@ class Application_Form_FormFactory extends Zend_Form {
                             'isEmpty' => "Bạn cần nhập $realName"
                         ]
                     ]
+                ],
+                [
+                    'StringLength', true, [
+                        'max' => 500,
+                        'messages' => [
+                            'stringLengthTooLong' => ucfirst($realName)
+                            . " phải dưới 500 kí tự"
+                        ]
+                    ]
                 ]
             ]
-        ]);
+        ]));
     }
 
     /**
-     * @param string $realName
-     */
-    private function __gender($realName) {
-        
-    }
-
-    /**
-     * @param string $realName
-     */
-    private function __birthday($realName) {
-        
-    }
-    
-    /**
+     * 
      * @param array $param
      */
-    private  final function __anyThing($param) {
-        $alias = $param[0];
-        $realName = $param[1];
-
-        $this->addElement('text', $alias, [
+    private function __note($param) {
+        $alias = $param['alias'];
+        $realName = $param['name'];
+        
+        $this->addElement(new Zend_Form_Element_Textarea($alias, [
             'label' => ucfirst($realName) . ":",
-            'required' => true
-        ]);
+            'required' => true,
+            'validators' => [
+                [
+                    'StringLength', true, [
+                        'max' => 500,
+                        'messages' => [
+                            'stringLengthTooLong' => ucfirst($realName)
+                            . " phải dưới 500 kí tự"
+                        ]
+                    ]
+                ]
+            ]
+        ]));
     }
 
     /**
      * @param array $param
      */
     private function __number($param) {
-        $alias = $param[0];
-        $realName = $param[1];
+        $alias = $param['alias'];
+        $realName = $param['name'];
 
-        $this->addElement('text', $alias, [
+        $this->addElement(new Zend_Form_Element_Text($alias, [
             'label' => ucfirst($realName) . ":",
             'required' => true,
             'validators' => [
@@ -294,7 +395,20 @@ class Application_Form_FormFactory extends Zend_Form {
                     ]
                 ]
             ]
-        ]);
+        ]));
+    }
+
+    /**
+     * @param array $param
+     */
+    private function __submit($param) {
+        $this->addElement(new Zend_Form_Element_Submit($param['name']));
+    }
+    
+    private function __getAttributes($arrayAttributes){
+        
+        var_dump($attributes);die;
+        return $attributes;
     }
 
 }
