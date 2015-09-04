@@ -1,3 +1,4 @@
+
 <section id="indexManageSupplier">
     <table class="table table-striped ">
         <header><h1 class="h1">Bảng danh sách các nhà cung cấp:</h1></header>
@@ -19,13 +20,13 @@
             $number = 0;
             foreach ($suppliers as $supplier):
                 $number++;
-                $supplierName = $supplier->SuppName;
-                $supplierAddress = $supplier->SuppAddress;
-                $supplierFacebook = $supplier->SuppFacebook;
-                $supplierPhone = $supplier->SuppPhone;
-                $supplierEmail = $supplier->SuppEmail;
-                $supplierFax = $supplier->SuppFax;
-                $supplierId = $supplier->SuppId;
+                $supplierName = $this->escape($supplier->SuppName);
+                $supplierAddress = $this->escape($supplier->SuppAddress);
+                $supplierFacebook = $this->escape($supplier->SuppFacebook);
+                $supplierPhone = $this->escape($supplier->SuppPhone);
+                $supplierEmail = $this->escape($supplier->SuppEmail);
+                $supplierFax = $this->escape($supplier->SuppFax);
+                $supplierId = $this->escape($supplier->SuppId);
                 $urlDelete = 'manage-supplier/delete/id/' . $supplierId;
                 $urlEdit = 'manage-supplier/edit/id/' . $supplierId;
                 ?>
@@ -44,3 +45,5 @@
         </tbody>
     </table>
 </section>
+
+<?=$this->translate('Danh mục sản phẩm')?>

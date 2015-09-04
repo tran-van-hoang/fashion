@@ -1,7 +1,9 @@
 <?php
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
-
+    protected function initSession(){
+        Zend_Session::start();
+    }
     protected function _initPlaceholders() {
         $this->bootstrap('View');
 
@@ -13,7 +15,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $headLink = $view->headLink();
         $headLink->prependStylesheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css');
         
-        // Set the initial script:
+        // Set the initial JavaScript:
         $headScript = $view->headScript();
         $headScript->appendFile('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js', 'text/javascript');
     }

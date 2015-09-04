@@ -9,20 +9,29 @@ class Administrator_ManageSupplierController extends Zend_Controller_Action {
     /**
      * @var Administrator_Model_SupplierMapper 
      */
-    private $__dbMapper;
+    private static $__dbMapper;
 
     public function init() {
-        $this->__dbMapper = new Administrator_Model_SupplierMapper();
-
         $this->view->headTitle('Quản lý nhà cung cấp|Fashion');
         $this->_helper->_layout->setLayout('not-seo');
+    }
+
+    /**
+     * @return Administrator_Model_SupplierMapper
+     */
+    private function __getDbMapper() {
+        if (!self::$__dbMapper) {
+            self::$__dbMapper = new Administrator_Model_SupplierMapper();
+        }
+
+        return self::$__dbMapper;
     }
 
     /**
      * this method will show list supplier profile
      */
     public function indexAction() {
-        $supplierMapper = $this->__dbMapper;
+        $supplierMapper = $this->__getDbMapper();
         $this->view->suppliers = $supplierMapper->getAllRecords();
     }
 
@@ -43,7 +52,7 @@ class Administrator_ManageSupplierController extends Zend_Controller_Action {
         }
 
         //call delete method
-        $supplierMapper = $this->__dbMapper;
+        $supplierMapper = $this->__getDbMapper();
         $supplierMapper->delete($id);
 
         //redirected to index
@@ -55,52 +64,59 @@ class Administrator_ManageSupplierController extends Zend_Controller_Action {
      */
     public function editAction() {
         $request = $this->getRequest();
-        $id = (int) $request->getParam('id');
-        $formEditSupplier = new Administrator_Form_EditSupplier();
-        $supplierMapper = $this->__dbMapper;
+//        $id = (int) $request->getParam('id');
+//        $supplierMapper = $this->__getDbMapper();
+        $editSupplierForm = 'Administrator_Form_EditSupplier';
+        $formEditSupplier = new Application_Form_FormFactory($editSupplierForm);
+        $formEditSupplier->populate(['SuppName'=>'Trần Văn Hoang']);
+
+
+
 
         if ($request->isPost()) {
             $data = $request->getPost();
-            
             //check valid form
             if (!$formEditSupplier->isValid($data)) {
+                echo "hello world";
                 $id = (int) $request->getParam('SuppId');
             }
-            
-            //if user click edit and close, page will be redirected to index
-            //after inserting data
-            if (isset($data['editandclose'])) {
-                unset($data['editandclose']);
-                $supplierMapper->edit($data);
-                $this->_helper->redirector('index');
-            }
-            
-            unset($data['edit']);
-            $supplierMapper->edit($data);
+
+//            //if user click edit and close, page will be redirected to index
+//            //after inserting data into database
+//            if (isset($data['editandclose'])) {
+//                unset($data['editandclose']);
+//                $supplierMapper->edit($data);
+//                $this->_helper->redirector('index');
+//            }
+//            
+//            //if user only click edit, data also inserted but it is'nt redirected
+//            //to index
+//            unset($data['edit']);
+//            $supplierMapper->edit($data);
         }
 
-        //if parameter id doesn't exist, page will be redirected to index immediately
-        if (!$id) {
-            $this->_helper->redirector('index');
-            return;
-        }
+//        //if parameter id doesn't exist, page will be redirected to index immediately
+//        if (!$id) {
+//            $this->_helper->redirector('index');
+//            return;
+//        }
 
         //if id doesn't exist on database, page will be redirected to index immediately
-        $supplier = $supplierMapper->getRecord($id);
-        if (!$supplier) {
-            $this->_helper->redirector('index');
-            return;
-        }
-
-        //populate form
-        $formEditSupplier->populate($supplier->toArray());
+//        $supplier = $supplierMapper->getRecord($id);
+//        if (!$supplier) {
+//            $this->_helper->redirector('index');
+//            return;
+//        }
+//
+//        populate form
+//        $formEditSupplier->populate($supplier->toArray());
         $this->view->formEditSupplier = $formEditSupplier;
     }
-    
+
     /**
      * create supplier profile
      */
-    public function createAction(){
+    public function createAction() {
         
     }
 

@@ -1,3 +1,13 @@
 <section id="editSupplier">
-    <?= $this->formEditSupplier ?>
+    <br><br><br><br><br>
+
+    <?=$form = $this->formEditSupplier;?>
+    <?php echo $form->renderForm(false); ?>
+    
+        <div class="element">
+            <?php echo $form->SuppName->renderLabel()
+                  . $form->SuppName->renderViewHelper() ?>
+            <?php echo $this->formSubmit('submit', 'edit') ?>
+        </div>
+    </form>
 </section>

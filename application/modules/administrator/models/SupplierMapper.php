@@ -3,7 +3,9 @@
 /**
  * @author Tran Van Hoang <butdatac@gmail.com>
  */
-class Administrator_Model_SupplierMapper extends Application_Model_Factory_MapperFactory implements Application_Model_Interface_MapperInterface {
+class Administrator_Model_SupplierMapper 
+extends Application_Model_Factory_MapperFactory 
+implements Application_Model_Interface_MapperInterface {
 
     /**
      * overide this variable of parent class with the 

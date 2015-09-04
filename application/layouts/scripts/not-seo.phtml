@@ -7,9 +7,10 @@
         <meta NAME="robots" CONTENT="noindex, nofollow">
         <meta charset="utf-8">
         <?= $this->headTitle() ?>
-        <?= $this->headMeta('ao thoi trang cong so so mot the gioi', 'keyword') ?>
+        <?= $this->headMeta('Áo thời trang số một thế giới|Fashion', 'keyword') ?>
         <?= $this->headLink() ?>
         <?= $this->headScript() ?>
+        <link>
     </head>
     <body>
         <!--begin menu-->
@@ -32,9 +33,7 @@
         
         <!--begin footer-->
         <footer>
-            <?php
-            echo $this->partial('_footer.phtml');
-            ?>
+            <?=$this->partial('_footer.phtml');?>
         </footer>
         <!--end footer-->
     </body>
